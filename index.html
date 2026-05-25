@@ -49,6 +49,8 @@ body {
   min-height: 100vh;
   padding-bottom: var(--nav-h);
   transition: background 0.3s;
+  text-wrap: pretty;
+  hanging-punctuation: allow-end;
 }
 
 body.tab-accueil { background: #fdf8f0; }
@@ -202,6 +204,33 @@ main { padding: 1.1rem; position: relative; z-index: 1; }
 .day-filled-check { display: none; width: 26px; height: 26px; background: #fff; color: var(--leaf); border-radius: 50%; font-size: 0.9rem; font-weight: 700; line-height: 26px; text-align: center; flex-shrink: 0; }
 .day-block.filled .day-filled-check { display: flex; align-items: center; justify-content: center; }
 
+/* ── Semaine 2 : couleur violette ── */
+.day-block.s2 .day-header { background: var(--grape); }
+.day-block.s2.filled { border-color: var(--grape); }
+.day-block.s2 .day-filled-check { color: var(--grape); }
+.day-block.s2 .half-day { background: #f1eaff; }
+.day-block.s2 .half-day.aprem { background: #fdeafc; }
+
+/* ── Configuration du stage (calendrier) ── */
+.config-card { background: #fff; border: 2px solid var(--line); border-radius: 18px; padding: 1.2rem; margin-bottom: 1.3rem; box-shadow: 0 4px 16px rgba(33,36,61,0.06); }
+.config-card h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.45rem; }
+.config-week { border-radius: 14px; padding: 0.9rem 1rem; margin-bottom: 0.9rem; border: 2px solid; }
+.config-week.w1 { background: #eafaf5; border-color: var(--leaf); }
+.config-week.w2 { background: #f1eaff; border-color: var(--grape); }
+.config-week .cw-title { font-family: var(--font-ui); font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem; }
+.config-week.w1 .cw-title { color: #1f9e84; }
+.config-week.w2 .cw-title { color: var(--grape); }
+.config-week .cw-toggle { font-family: var(--font-ui); font-size: 0.8rem; font-weight: 600; color: var(--muted); display: flex; align-items: center; gap: 0.5rem; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.config-week .cw-fields.hidden { display: none; }
+.config-empty { text-align: center; color: var(--muted); font-weight: 600; padding: 2rem 1rem; line-height: 1.6; }
+
+/* ── Photo du jour ── */
+.day-photo { margin-bottom: 0.9rem; }
+.photo-drop { display: flex; align-items: center; justify-content: center; gap: 0.5rem; border: 2px dashed var(--line); border-radius: 14px; padding: 1rem; cursor: pointer; color: var(--muted); font-family: var(--font-ui); font-weight: 600; font-size: 0.88rem; text-align: center; transition: border-color 0.2s, background 0.2s; -webkit-tap-highlight-color: transparent; }
+.photo-drop:active { border-color: var(--accent); background: var(--accent-soft); }
+.day-photo img { width: 100%; border-radius: 14px; display: block; margin-bottom: 0.5rem; max-height: 320px; object-fit: cover; }
+.photo-remove { background: none; border: none; color: var(--coral); font-family: var(--font-ui); font-weight: 600; font-size: 0.82rem; cursor: pointer; padding: 0.3rem 0; -webkit-tap-highlight-color: transparent; }
+
 /* ── CHAMPS ── */
 .field { margin-bottom: 1.1rem; }
 .field label { display: block; margin-bottom: 0.4rem; font-family: var(--font-ui); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.01em; line-height: 1.4; color: var(--ink); }
@@ -315,10 +344,12 @@ main { padding: 1.1rem; position: relative; z-index: 1; }
   .field input, .field textarea { border: 1px solid #999 !important; background: #fff !important; }
   .cheer { background: #fff !important; color: #000 !important; border: 2px solid #000; box-shadow: none; }
   .cheer h3, .cheer h3 em, .cheer p, .cheer .signature { color: #000 !important; }
-  .btn, .export-card, .rating { display: none !important; }
+  .btn, .export-card, .rating, .config-card, .photo-drop { display: none !important; }
   .contact-card { background: #fff !important; border: 1px solid #000; }
   .alert-box, .info-box, .slate-box, .save-note, .disclaimer { background: #fff !important; border: 1px solid #999 !important; }
-  .half-day { background: #f7f7f7 !important; }
+  .half-day, .day-block.s2 .half-day, .day-block.s2 .half-day.aprem { background: #f7f7f7 !important; }
+  .day-block.s2 .day-header { background: #eee !important; }
+  .day-photo img { max-height: 240px !important; }
 }
 </style>
 </head>
@@ -329,11 +360,11 @@ main { padding: 1.1rem; position: relative; z-index: 1; }
 <header>
   <div class="header-inner">
     <div>
-      <div class="header-title"><span class="emoji">🎒</span> Mon carnet de <em>stage</em></div>
+      <div class="header-title"><span class="emoji">📓</span> Mon carnet de <em>stage</em></div>
       <div class="header-sub">Seconde · Lycée Édouard Herriot, Voiron · Juin 2026</div>
     </div>
     <div class="header-meta">
-      📅 Stage : semaines du 15 et 22 juin<br>
+      📅 Stage&nbsp;: semaines du 15 et 22 juin<br>
       🗓️ 12 jours, ou 2 × 6 jours<br>
       🎯 Découvrir le monde professionnel<br>
       <span class="countdown" id="countdown"></span>
@@ -368,7 +399,7 @@ main { padding: 1.1rem; position: relative; z-index: 1; }
   <div class="intro-hero">
     <div class="intro-kicker">La démarche · à lire en premier</div>
     <h2>Ce stage est <span class="pop">pour toi.</span></h2>
-    <p>Tu vas vivre ta <strong>séquence d'observation en milieu professionnel</strong>&nbsp;: une première immersion dans une entreprise, une administration ou une association, pour <span class="highlight">observer le fonctionnement d'une organisation et découvrir des métiers</span> — et te poser une question simple&nbsp;: «&nbsp;est-ce que ce monde-là me parle&nbsp;?&nbsp;»</p>
+    <p>Tu vas vivre ta <strong>séquence d'observation en milieu professionnel</strong>&nbsp;: une première immersion dans une entreprise, une administration ou une association, pour <span class="highlight">observer le fonctionnement d'une organisation et découvrir des métiers</span>.</p>
     <p>Cette appli t'accompagne <strong>avant, pendant et après</strong> ton stage. Tu y notes ce que tu vis au fil de l'eau&nbsp;: une checklist pour ne rien oublier, des fiches conseils, et un journal de bord à remplir chaque jour.</p>
     <p>Tes notes te serviront <strong>à la rentrée de Première</strong>, lors de l'entretien avec l'équipe pédagogique. Elles t'aideront à raconter ton expérience et à avancer sur ton orientation, dans le cadre du parcours Avenir.</p>
   </div>
@@ -396,15 +427,15 @@ main { padding: 1.1rem; position: relative; z-index: 1; }
   </div>
 
   <div class="save-note">
-    <strong>💾 Important : où sont enregistrées tes réponses ?</strong>
-    Tout ce que tu écris est sauvegardé <strong>uniquement sur cet appareil</strong> (ce téléphone ou cet ordinateur, dans ce navigateur). Rien n'est envoyé sur Internet. <strong>Tu ne pourras pas retrouver ton carnet sur un autre appareil</strong>&nbsp;: si tu changes de téléphone ou d'ordinateur, la seule façon de garder ton travail est de l'<strong>exporter en PDF</strong> (onglet «&nbsp;Sauvegarde&nbsp;»). Pense à le faire régulièrement&nbsp;!
+    <strong>💾 Où sont enregistrées tes réponses&nbsp;?</strong>
+    Tout ce que tu écris est sauvegardé <strong>uniquement sur cet appareil</strong> (ce téléphone ou cet ordinateur, dans ce navigateur). Rien n'est envoyé sur Internet. <strong>Tu ne pourras pas retrouver ton carnet sur un autre appareil</strong>&nbsp;: pour garder ton travail à l'abri, exporte-le <strong>en PDF</strong> (bouton en bas des onglets «&nbsp;Pendant&nbsp;» et «&nbsp;Après&nbsp;»). Pense à le faire régulièrement&nbsp;!
   </div>
 
   <p class="helper center" style="margin-top:1.2rem;">Commence par l'onglet «&nbsp;Avant&nbsp;» 👇</p>
 
   <div class="disclaimer">
     <strong>À propos de cette application</strong>
-    Tes réponses restent <strong>sur ton appareil, dans la mémoire de ce navigateur</strong>. Elles ne passent pas d'un appareil à un autre&nbsp;: utilise <strong>toujours le même téléphone ou ordinateur</strong> et le même navigateur pour les retrouver. Pour conserver une trace durable ou la montrer à quelqu'un, exporte ton carnet <strong>en PDF</strong> (bouton disponible dans les onglets «&nbsp;Pendant&nbsp;» et «&nbsp;Après&nbsp;»). Document conçu par l'équipe pédagogique du Lycée Édouard Herriot (Voiron) avec l'aide de Claude.ai (Anthropic) — usage interne, à but pédagogique.
+    Application conforme au RGPD&nbsp;: elle fonctionne entièrement hors ligne, ne collecte aucune donnée et n'effectue aucun traçage. Tes réponses et tes photos ne quittent jamais ton navigateur et ne sont transmises à personne. Conçue par l'équipe pédagogique du Lycée Édouard Herriot (Voiron) avec l'aide de Claude.ai (Anthropic). Usage interne, à but pédagogique.
   </div>
 </section>
 
@@ -487,7 +518,32 @@ main { padding: 1.1rem; position: relative; z-index: 1; }
   <hr class="section-divider">
 
   <div class="block-title"><span class="num">2</span> Journal de bord</div>
-  <div class="slate-box"><strong>💡 Deux formules</strong><strong>Stage de 12 jours&nbsp;:</strong> remplis les 12 jours. <strong>Deux stages d'une semaine&nbsp;:</strong> les jours 1 à 6 = première entreprise, les jours 7 à 12 = seconde entreprise. Remplis seulement ce qui te concerne.</div>
+
+  <div class="config-card">
+    <h3>📅 Configure tes jours de stage</h3>
+    <p class="helper" style="margin-bottom:0.9rem;">Indique tes dates&nbsp;: seuls les jours travaillés (lundi à vendredi) apparaîtront dans ton journal.</p>
+
+    <div class="config-week w1">
+      <div class="cw-title">🟢 Première semaine (ou stage unique)</div>
+      <div class="field-row">
+        <div class="field"><label>Premier jour</label><input type="date" id="cfg-w1-start" data-save="cfg-w1-start"></div>
+        <div class="field"><label>Dernier jour</label><input type="date" id="cfg-w1-end" data-save="cfg-w1-end"></div>
+      </div>
+    </div>
+
+    <div class="config-week w2">
+      <div class="cw-title">🟣 Seconde semaine (autre lieu d'accueil)</div>
+      <label class="cw-toggle"><input type="checkbox" id="cfg-w2-on" data-save="cfg-w2-on" style="width:20px;height:20px;"> J'ai un second stage dans un autre lieu</label>
+      <div class="cw-fields hidden" id="cfg-w2-fields" style="margin-top:0.7rem;">
+        <div class="field-row">
+          <div class="field"><label>Premier jour</label><input type="date" id="cfg-w2-start" data-save="cfg-w2-start"></div>
+          <div class="field"><label>Dernier jour</label><input type="date" id="cfg-w2-end" data-save="cfg-w2-end"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn" onclick="buildJournal(true)" style="margin-top:0.3rem;">✨ Générer mon journal</button>
+  </div>
 
   <div id="journal-container"></div>
 
@@ -571,7 +627,7 @@ main { padding: 1.1rem; position: relative; z-index: 1; }
 
   <div class="export-card feature">
     <div class="export-icon">📄</div>
-    <h3>Garde une trace : exporte en PDF</h3>
+    <h3>Garde une trace&nbsp;: exporte en PDF</h3>
     <p><strong>C'est la seule façon</strong> de conserver ton carnet hors de cet appareil — pour le montrer à la rentrée de Première ou le mettre à l'abri. Tes réponses sont enregistrées automatiquement, mais <strong>uniquement sur ce téléphone ou cet ordinateur</strong>&nbsp;: si tu en changes, elles ne suivent pas. Sur le menu d'impression, choisis «&nbsp;Enregistrer au format PDF&nbsp;».</p>
     <button class="btn grape big" onclick="exportPDF()">📄 Créer mon PDF</button>
   </div>
@@ -581,46 +637,126 @@ main { padding: 1.1rem; position: relative; z-index: 1; }
 
 <script>
 const STORAGE_KEY = 'carnet_stage_2nde_herriot';
-const NB_JOURS = 12;
 const TAB_COLORS = {
   accueil: { accent: '#ff9f43', soft: '#fff3e3', deep: '#d97a00' },
   avant:   { accent: '#3aa0ff', soft: '#e9f4ff', deep: '#1b6fd1' },
   pendant: { accent: '#2ec4a6', soft: '#eafaf5', deep: '#1f9e84' },
   apres:   { accent: '#ff5fa2', soft: '#fff0f6', deep: '#d63384' }
 };
+const MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+const JOURS = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
 
-function buildJournal() {
+// renvoie la liste des jours ouvrés (lun-ven) entre deux dates ISO incluses
+function workdaysBetween(startISO, endISO) {
+  const days = [];
+  if (!startISO || !endISO) return days;
+  const start = new Date(startISO + 'T12:00:00');
+  const end = new Date(endISO + 'T12:00:00');
+  if (isNaN(start) || isNaN(end) || end < start) return days;
+  let cur = new Date(start);
+  let guard = 0;
+  while (cur <= end && guard < 90) {
+    const dow = cur.getDay();
+    if (dow !== 0 && dow !== 6) days.push(cur.toISOString().slice(0, 10));
+    cur.setDate(cur.getDate() + 1);
+    guard++;
+  }
+  return days;
+}
+
+function prettyDate(iso) {
+  const d = new Date(iso + 'T12:00:00');
+  return `${JOURS[d.getDay()]} ${d.getDate()} ${MOIS[d.getMonth()]}`;
+}
+
+function buildJournal(fromButton) {
   const container = document.getElementById('journal-container');
+  const w1 = workdaysBetween(val('cfg-w1-start'), val('cfg-w1-end')).map(d => ({ date: d, sem: 1 }));
+  let w2 = [];
+  if (document.getElementById('cfg-w2-on') && document.getElementById('cfg-w2-on').checked) {
+    w2 = workdaysBetween(val('cfg-w2-start'), val('cfg-w2-end')).map(d => ({ date: d, sem: 2 }));
+  }
+  const allDays = [...w1, ...w2];
+
+  if (allDays.length === 0) {
+    container.innerHTML = `<div class="config-empty">📭 Aucun jour configuré pour l'instant.<br>Renseigne tes dates ci-dessus puis touche «&nbsp;Générer mon journal&nbsp;».</div>`;
+    return;
+  }
+
   let html = '';
-  for (let j = 1; j <= NB_JOURS; j++) {
-    const semaine = j <= 6 ? 'Semaine 1' : 'Semaine 2';
+  allDays.forEach((day, idx) => {
+    const n = idx + 1;
+    const key = day.date; // clé stable basée sur la date
+    const s2 = day.sem === 2 ? ' s2' : '';
+    const dot = day.sem === 2 ? '🟣' : '🟢';
     html += `
-    <div class="day-block" id="day-${j}">
-      <div class="day-header" onclick="toggleDay('day-${j}')">
-        <div><div class="day-label">${semaine} · Jour ${j}</div><div class="day-title">Journée n°${j}</div></div>
+    <div class="day-block${s2}" id="day-${key}">
+      <div class="day-header" onclick="toggleDay('day-${key}')">
+        <div><div class="day-label">${dot} Jour ${n} · ${day.sem === 2 ? 'Semaine 2' : 'Semaine 1'}</div><div class="day-title">${prettyDate(day.date)}</div></div>
         <div style="display:flex;align-items:center;gap:0.6rem;"><span class="day-filled-check">✓</span><span class="day-toggle">⌄</span></div>
       </div>
       <div class="day-body">
-        <div class="field-row">
-          <div class="field"><label>Date</label><input type="date" data-save="j${j}-date" oninput="checkDayFilled('day-${j}')"></div>
-          <div class="field"><label>Horaires</label><input type="text" data-save="j${j}-horaires" placeholder="9h–17h" oninput="checkDayFilled('day-${j}')"></div>
+        <div class="field"><label>Horaires</label><input type="text" data-save="j-${key}-horaires" placeholder="9h–17h" oninput="checkDayFilled('day-${key}')"></div>
+
+        <div class="day-photo" id="photo-${key}">
+          <label class="photo-drop">📷 Ajouter une photo de la journée
+            <input type="file" accept="image/*" capture="environment" style="display:none" onchange="addPhoto(this, '${key}')">
+          </label>
         </div>
+
         <div class="half-day">
           <div class="half-day-title">☀️ Matin</div>
-          <div class="field"><label>Tâches faites ou observées</label><textarea data-save="j${j}-matin-taches" placeholder="…" oninput="checkDayFilled('day-${j}')"></textarea></div>
-          <div class="field"><label>Personnes rencontrées · outils utilisés</label><textarea data-save="j${j}-matin-pers" placeholder="…" oninput="checkDayFilled('day-${j}')"></textarea></div>
+          <div class="field"><label>Tâches faites ou observées</label><textarea data-save="j-${key}-matin-taches" placeholder="…" oninput="checkDayFilled('day-${key}')"></textarea></div>
+          <div class="field"><label>Personnes rencontrées · outils utilisés</label><textarea data-save="j-${key}-matin-pers" placeholder="…" oninput="checkDayFilled('day-${key}')"></textarea></div>
         </div>
         <div class="half-day aprem">
           <div class="half-day-title">🌙 Après-midi</div>
-          <div class="field"><label>Tâches faites ou observées</label><textarea data-save="j${j}-aprem-taches" placeholder="…" oninput="checkDayFilled('day-${j}')"></textarea></div>
-          <div class="field"><label>Personnes rencontrées · outils utilisés</label><textarea data-save="j${j}-aprem-pers" placeholder="…" oninput="checkDayFilled('day-${j}')"></textarea></div>
+          <div class="field"><label>Tâches faites ou observées</label><textarea data-save="j-${key}-aprem-taches" placeholder="…" oninput="checkDayFilled('day-${key}')"></textarea></div>
+          <div class="field"><label>Personnes rencontrées · outils utilisés</label><textarea data-save="j-${key}-aprem-pers" placeholder="…" oninput="checkDayFilled('day-${key}')"></textarea></div>
         </div>
-        <div class="field"><label>⭐ Ce que j'ai appris d'important aujourd'hui</label><textarea data-save="j${j}-appris" placeholder="Même une petite chose !" oninput="checkDayFilled('day-${j}')"></textarea></div>
-        <div class="field"><label>😊 Mon ressenti sur la journée</label><textarea data-save="j${j}-ressenti" placeholder="…" oninput="checkDayFilled('day-${j}')"></textarea></div>
+        <div class="field"><label>⭐ Ce que j'ai appris d'important aujourd'hui</label><textarea data-save="j-${key}-appris" placeholder="Même une petite chose !" oninput="checkDayFilled('day-${key}')"></textarea></div>
+        <div class="field"><label>😊 Mon ressenti sur la journée</label><textarea data-save="j-${key}-ressenti" placeholder="…" oninput="checkDayFilled('day-${key}')"></textarea></div>
       </div>
     </div>`;
-  }
+  });
   container.innerHTML = html;
+
+  // réattacher la sauvegarde auto sur les nouveaux champs, puis recharger les valeurs
+  attachAutosave();
+  loadState(true);
+  if (fromButton) { flashToast('✨ Journal généré !'); saveState(); }
+}
+
+function val(id) { const el = document.getElementById(id); return el ? el.value : ''; }
+
+// ── PHOTO : compression et insertion (non stockée, présente dans le PDF) ──
+function addPhoto(input, key) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const maxW = 1000;
+      const scale = Math.min(1, maxW / img.width);
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+      const wrap = document.getElementById('photo-' + key);
+      wrap.innerHTML = `<img src="${dataUrl}" alt="Photo du ${key}"><button class="photo-remove" onclick="removePhoto('${key}')">✕ Retirer la photo</button>`;
+      const block = document.getElementById('day-' + key);
+      if (block) block.classList.add('filled');
+      flashToast('📷 Photo ajoutée (pensez à exporter en PDF)');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function removePhoto(key) {
+  const wrap = document.getElementById('photo-' + key);
+  wrap.innerHTML = `<label class="photo-drop">📷 Ajouter une photo de la journée<input type="file" accept="image/*" capture="environment" style="display:none" onchange="addPhoto(this, '${key}')"></label>`;
 }
 
 function showTab(id, btn) {
@@ -715,11 +851,19 @@ function applyState(state) {
     const r = document.querySelector(`.rating[data-rating="${k}"]`);
     if (r) { const v = parseInt(state.ratings[k] || '0'); r.dataset.value = v; r.querySelectorAll('.star').forEach((s, i) => s.classList.toggle('on', i < v)); }
   }
+  syncWeek2Toggle();
   document.querySelectorAll('.todo-card').forEach(c => updateProgress(c));
   document.querySelectorAll('.day-block').forEach(b => {
     const filled = [...b.querySelectorAll('textarea, input')].some(el => el.value && el.value.trim() !== '');
     b.classList.toggle('filled', filled);
   });
+}
+
+// affiche/masque les champs de la semaine 2 selon la case
+function syncWeek2Toggle() {
+  const on = document.getElementById('cfg-w2-on');
+  const fields = document.getElementById('cfg-w2-fields');
+  if (on && fields) fields.classList.toggle('hidden', !on.checked);
 }
 
 let saveTimer = null;
@@ -730,12 +874,14 @@ function saveState() {
     catch (e) { flashToast('⚠️ Sauvegarde impossible'); }
   }, 400);
 }
-function loadState() {
+function loadState(silent) {
   try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) applyState(JSON.parse(raw)); }
   catch (e) { console.warn('loadState', e); }
 }
 function attachAutosave() {
   document.querySelectorAll('input[type="text"], input[type="date"], textarea, select').forEach(el => {
+    if (el.dataset.autosaveBound) return;
+    el.dataset.autosaveBound = '1';
     el.addEventListener('input', saveState); el.addEventListener('change', saveState);
   });
 }
@@ -756,17 +902,20 @@ function updateCountdown() {
   const diff = target - new Date();
   const days = Math.ceil(diff / 86400000);
   if (days > 1) el.textContent = `⏳ J-${days} avant le départ`;
-  else if (days === 1) el.textContent = `⏳ C'est demain !`;
-  else if (days === 0) el.textContent = `🚀 C'est aujourd'hui — bon stage !`;
-  else if (days >= -11) el.textContent = `🛠️ Stage en cours — pense à ton journal !`;
-  else el.textContent = `🌱 Stage terminé — remplis ton bilan !`;
+  else if (days === 1) el.textContent = `⏳ C'est demain !`;
+  else if (days === 0) el.textContent = `🚀 C'est aujourd'hui — bon stage !`;
+  else if (days >= -11) el.textContent = `🛠️ Stage en cours — pense à ton journal !`;
+  else el.textContent = `🌱 Stage terminé — remplis ton bilan !`;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  buildJournal();
   buildRatings();
   attachAutosave();
-  loadState();
+  loadState();          // charge l'identité, la config de stage, et les autres onglets
+  buildJournal();       // génère les jours à partir des dates configurées
+  // écouteur sur la case « second stage »
+  const w2 = document.getElementById('cfg-w2-on');
+  if (w2) w2.addEventListener('change', () => { syncWeek2Toggle(); });
   updateCountdown();
   setInterval(updateCountdown, 3600000);
 });
