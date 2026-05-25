@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon carnet de stage · Seconde · Lycée Édouard Herriot</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════
+   VARIABLES & RESET
+══════════════════════════════════════════════ */
+:root {
+  --ink: #1a1510;
+  --paper: #f5f0e8;
+  --aged: #e8dfc8;
+  --rust: #b84c1e;
+  --ochre: #c9921a;
+  --sage: #4a6741;
+  --slate: #3d4f5c;
+  --dust: #8c7c6a;
+  --light-dust: #d4c8b8;
+  --gold: #c9921a;
+  --cream: #faf6ee;
+  --nav-h: 64px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+  padding-bottom: var(--nav-h);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══════════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════════ */
+header {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 1.4rem 1rem 1.2rem;
+  position: relative;
+  overflow: hidden;
+}
+header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--rust), var(--ochre), var(--sage));
+}
+.header-inner { display: flex; flex-direction: column; gap: 0.75rem; }
+.header-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.header-title em { font-style: italic; color: var(--ochre); }
+.header-sub {
+  margin-top: 0.35rem;
+  font-size: 0.82rem;
+  color: var(--light-dust);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+.header-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--light-dust);
+  line-height: 1.9;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 4px;
+  padding: 0.6rem 0.8rem;
+}
+.header-meta .countdown { margin-top: 0.4rem; display: block; font-size: 0.8rem; color: var(--ochre); font-weight: 500; letter-spacing: 0.05em; }
+
+/* ══════════════════════════════════════════════
+   IDENTITÉ ÉLÈVE (mini bandeau)
+══════════════════════════════════════════════ */
+.identity-bar {
+  background: #2c2520;
+  color: var(--light-dust);
+  padding: 0.6rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+}
+.identity-bar .id-field { display: flex; align-items: center; gap: 0.4rem; }
+.identity-bar input {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 4px;
+  color: var(--paper);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  padding: 0.3rem 0.5rem;
+  outline: none;
+  min-width: 90px;
+}
+.identity-bar input:focus { border-color: var(--ochre); }
+.identity-bar label { color: var(--dust); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.6rem; }
+
+/* ══════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════ */
+.nav-tabs { display: none; }
+
+#bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  z-index: 500;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.bnav-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--dust);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  padding: 0.5rem 0.15rem;
+  transition: color 0.2s;
+  font-family: 'DM Mono', monospace;
+  -webkit-tap-highlight-color: transparent;
+}
+.bnav-btn .bnav-icon { font-size: 1.25rem; line-height: 1; position: relative; display: inline-block; }
+.bnav-btn .bnav-label { font-size: 0.5rem; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1; }
+.bnav-btn.active { color: var(--ochre); }
+.bnav-btn.active .bnav-icon { filter: drop-shadow(0 0 4px rgba(201,146,26,0.5)); }
+
+/* ══════════════════════════════════════════════
+   MAIN
+══════════════════════════════════════════════ */
+main { padding: 1rem; position: relative; z-index: 1; }
+.tab-section { display: none; }
+.tab-section.active { display: block; animation: fade-in 0.35s ease; }
+@keyframes fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── SECTION TITRES ── */
+.section-heading { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; font-style: italic; margin-bottom: 0.2rem; }
+.section-sub { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--dust); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.5rem; }
+.section-divider { border: none; border-top: 1px solid var(--light-dust); margin: 1.6rem 0; }
+.block-title { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-style: italic; font-weight: 400; margin: 1.6rem 0 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
+.block-title .num { font-family: 'DM Mono', monospace; font-size: 0.7rem; font-style: normal; background: var(--ink); color: var(--paper); width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+/* ══════════════════════════════════════════════
+   INTRO / DÉMARCHE
+══════════════════════════════════════════════ */
+.intro-hero {
+  background: var(--cream);
+  border: 1px solid var(--light-dust);
+  border-top: 4px solid var(--ochre);
+  border-radius: 10px;
+  padding: 1.4rem 1.2rem;
+  margin-bottom: 1.4rem;
+}
+.intro-hero .intro-kicker { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.5rem; }
+.intro-hero h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; font-style: italic; line-height: 1.2; margin-bottom: 0.8rem; }
+.intro-hero p { font-size: 0.92rem; margin-bottom: 0.7rem; }
+.intro-hero p:last-child { margin-bottom: 0; }
+.intro-hero .highlight { background: rgba(201,146,26,0.18); padding: 0.05rem 0.3rem; border-radius: 3px; }
+
+.step-row { display: flex; flex-direction: column; gap: 0.7rem; margin: 1.2rem 0; }
+.step-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: var(--cream);
+  border: 1px solid var(--light-dust);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+}
+.step-pill .step-emoji { font-size: 1.5rem; flex-shrink: 0; }
+.step-pill .step-text { font-size: 0.85rem; }
+.step-pill .step-text strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; font-weight: 600; }
+.step-pill.av { border-left: 4px solid var(--slate); }
+.step-pill.pe { border-left: 4px solid var(--sage); }
+.step-pill.ap { border-left: 4px solid var(--rust); }
+
+/* ══════════════════════════════════════════════
+   ALERT / INFO BOXES
+══════════════════════════════════════════════ */
+.alert-box {
+  background: rgba(184,76,30,0.07);
+  border: 1px solid rgba(184,76,30,0.3);
+  border-left: 4px solid var(--rust);
+  border-radius: 6px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 1.2rem;
+  font-size: 0.86rem;
+}
+.alert-box strong { color: var(--rust); font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; display: block; margin-bottom: 0.35rem; }
+.info-box {
+  background: rgba(74,103,65,0.07);
+  border: 1px solid rgba(74,103,65,0.25);
+  border-left: 4px solid var(--sage);
+  border-radius: 6px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 1.2rem;
+  font-size: 0.86rem;
+}
+.info-box strong { color: var(--sage); font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; display: block; margin-bottom: 0.35rem; }
+.slate-box {
+  background: rgba(61,79,92,0.07);
+  border: 1px solid rgba(61,79,92,0.25);
+  border-left: 4px solid var(--slate);
+  border-radius: 6px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 1.2rem;
+  font-size: 0.86rem;
+}
+.slate-box strong { color: var(--slate); font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; display: block; margin-bottom: 0.35rem; }
+
+/* ══════════════════════════════════════════════
+   TASK LIST (to-do)
+══════════════════════════════════════════════ */
+.todo-card {
+  border: 1px solid var(--light-dust);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--cream);
+  box-shadow: 0 2px 8px rgba(26,21,16,0.06);
+  margin-bottom: 1.2rem;
+}
+.todo-header {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.85rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.todo-header .todo-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ochre); }
+.todo-header .todo-title { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 300; font-style: italic; margin-top: 0.1rem; }
+.todo-body { padding: 0.5rem 0.6rem; }
+
+.task-list { list-style: none; display: flex; flex-direction: column; gap: 0.3rem; }
+.task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.6rem 0.7rem;
+  border-radius: 6px;
+  border-left: 3px solid transparent;
+  transition: background 0.15s;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 44px;
+}
+.task-item:active { background: rgba(26,21,16,0.06); }
+.task-item input[type="checkbox"] {
+  appearance: none;
+  width: 20px; height: 20px;
+  border: 2px solid var(--dust);
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 1px;
+  position: relative;
+  transition: all 0.2s;
+}
+.task-item input[type="checkbox"]:checked { background: var(--sage); border-color: var(--sage); }
+.task-item input[type="checkbox"]:checked::after {
+  content: '✓'; position: absolute; top: -1px; left: 2px;
+  color: white; font-size: 13px; font-weight: bold;
+}
+.task-item.done .task-text { text-decoration: line-through; color: var(--dust); }
+.task-text { flex: 1; font-size: 0.88rem; line-height: 1.45; }
+.task-item.priority-haute { border-left-color: var(--rust); }
+.task-item.priority-moyenne { border-left-color: var(--ochre); }
+.task-item.priority-basse { border-left-color: var(--light-dust); }
+
+/* ── progress ── */
+.progress-wrap { padding: 0.5rem 1rem 0.9rem; }
+.progress-label { display: flex; justify-content: space-between; font-family: 'DM Mono', monospace; font-size: 0.62rem; color: var(--dust); margin-bottom: 0.3rem; }
+.progress-bar { height: 6px; background: var(--light-dust); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--sage), var(--ochre)); border-radius: 3px; transition: width 0.4s ease; width: 0%; }
+
+/* ══════════════════════════════════════════════
+   FICHES CONSEILS (flipcards)
+══════════════════════════════════════════════ */
+.cards-grid { display: grid; grid-template-columns: 1fr; gap: 0.9rem; margin-top: 0.5rem; }
+.flipcard { perspective: 1000px; min-height: 200px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.flipcard-inner {
+  width: 100%; height: 100%; min-height: 200px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
+}
+.flipcard.flipped .flipcard-inner { transform: rotateY(180deg); }
+.flipcard-front, .flipcard-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 8px;
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.flipcard-front { background: var(--cream); border: 1px solid var(--light-dust); border-top: 3px solid var(--ochre); }
+.flipcard-back { background: var(--ink); color: var(--paper); transform: rotateY(180deg); border-top: 3px solid var(--sage); overflow-y: auto; }
+.card-theme { font-family: 'DM Mono', monospace; font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dust); margin-bottom: 0.5rem; }
+.flipcard-back .card-theme { color: var(--light-dust); }
+.card-question { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-style: italic; font-weight: 400; line-height: 1.3; flex: 1; display: flex; align-items: center; }
+.card-hint { font-size: 0.62rem; color: var(--dust); font-family: 'DM Mono', monospace; text-align: right; margin-top: 0.5rem; }
+.flipcard-back .card-hint { color: rgba(245,240,232,0.4); }
+.card-answer { font-size: 0.82rem; line-height: 1.55; flex: 1; color: var(--aged); }
+.card-answer ul { list-style: none; padding: 0; }
+.card-answer li { padding-left: 1rem; position: relative; margin-bottom: 0.35rem; }
+.card-answer li::before { content: '→'; position: absolute; left: 0; color: var(--ochre); }
+
+/* ══════════════════════════════════════════════
+   JOURNAL DE BORD
+══════════════════════════════════════════════ */
+.day-block {
+  margin-bottom: 1.2rem;
+  border: 1px solid var(--light-dust);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--cream);
+  box-shadow: 0 2px 8px rgba(26,21,16,0.06);
+}
+.day-header {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.85rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.day-header:active { background: #2c2520; }
+.day-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ochre); }
+.day-title { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 300; font-style: italic; margin-top: 0.1rem; }
+.day-toggle { font-size: 1.2rem; transition: transform 0.3s; opacity: 0.6; }
+.day-block.open .day-toggle { transform: rotate(180deg); }
+.day-body { padding: 1rem; display: none; }
+.day-block.open .day-body { display: block; }
+.day-block.filled .day-header { background: #1e2b1c; }
+.day-block.filled .day-label { color: #7db87a; }
+.day-filled-check { display: none; width: 22px; height: 22px; background: var(--sage); color:#fff; border-radius: 50%; font-size: 0.75rem; font-weight: 700; line-height: 22px; text-align: center; flex-shrink: 0; box-shadow: 0 0 0 3px rgba(74,103,65,0.25); }
+.day-block.filled .day-filled-check { display: flex; align-items: center; justify-content: center; }
+
+/* ══════════════════════════════════════════════
+   CHAMPS DE SAISIE
+══════════════════════════════════════════════ */
+.field { margin-bottom: 0.9rem; }
+.field label { display: block; margin-bottom: 0.3rem; font-family: 'DM Mono', monospace; font-size: 0.63rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--dust); }
+.field input, .field textarea, .field select {
+  width: 100%;
+  background: var(--paper);
+  border: 1px solid var(--light-dust);
+  border-radius: 6px;
+  padding: 0.6rem 0.7rem;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 1rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+  resize: vertical;
+}
+.field input:focus, .field textarea:focus, .field select:focus { border-color: var(--ochre); background: var(--cream); }
+.field textarea { min-height: 72px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+.field-hint { font-size: 0.72rem; color: var(--dust); font-style: italic; margin-top: 0.2rem; line-height: 1.4; }
+.half-day { background: rgba(26,21,16,0.03); border: 1px dashed var(--light-dust); border-radius: 6px; padding: 0.7rem; margin-bottom: 0.8rem; }
+.half-day-title { font-family: 'DM Mono', monospace; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--slate); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem; }
+
+/* fiche d'identité grid */
+.identity-card { background: var(--cream); border: 1px solid var(--light-dust); border-radius: 8px; padding: 1rem; margin-bottom: 1.2rem; }
+
+/* checkbox compétences */
+.skill-check { list-style: none; }
+.skill-check li { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.4rem 0; min-height: 40px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.skill-check input[type="checkbox"] {
+  appearance: none; width: 18px; height: 18px;
+  border: 1.5px solid var(--dust); border-radius: 3px;
+  cursor: pointer; flex-shrink: 0; margin-top: 2px; position: relative; transition: all 0.2s;
+}
+.skill-check input[type="checkbox"]:checked { background: var(--sage); border-color: var(--sage); }
+.skill-check input[type="checkbox"]:checked::after { content: '✓'; position: absolute; top: -2px; left: 2px; color: white; font-size: 11px; font-weight: bold; }
+.skill-check .sk-text { font-size: 0.85rem; line-height: 1.4; }
+
+/* note 1-5 (étoiles) */
+.rating { display: flex; gap: 0.3rem; margin-top: 0.2rem; }
+.rating .star { font-size: 1.6rem; cursor: pointer; color: var(--light-dust); transition: transform 0.1s, color 0.15s; -webkit-tap-highlight-color: transparent; line-height: 1; }
+.rating .star.on { color: var(--ochre); }
+.rating .star:active { transform: scale(1.2); }
+
+/* ══════════════════════════════════════════════
+   BOUTONS / EXPORT
+══════════════════════════════════════════════ */
+.btn {
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  padding: 0.8rem 1.4rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.2s;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+.btn:active { background: var(--rust); }
+.btn.ochre { background: var(--ochre); color: var(--ink); }
+.btn.ochre:active { background: var(--rust); color: var(--paper); }
+.btn.outline { background: transparent; color: var(--ink); border: 1.5px solid var(--light-dust); }
+.btn.outline:active { border-color: var(--rust); }
+.btn-stack { display: flex; flex-direction: column; gap: 0.7rem; margin: 1rem 0; }
+
+.export-card { background: var(--cream); border: 1px solid var(--light-dust); border-radius: 10px; padding: 1.2rem; margin-bottom: 1.2rem; }
+.export-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-style: italic; font-weight: 400; margin-bottom: 0.4rem; }
+.export-card p { font-size: 0.85rem; color: var(--dust); margin-bottom: 1rem; line-height: 1.55; }
+.export-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+
+/* ══════════════════════════════════════════════
+   ENCOURAGEMENT FINAL
+══════════════════════════════════════════════ */
+.cheer {
+  background: linear-gradient(135deg, var(--ink), #2c2520);
+  color: var(--paper);
+  border-radius: 12px;
+  padding: 1.6rem 1.3rem;
+  text-align: center;
+  margin: 1.4rem 0;
+  position: relative;
+  overflow: hidden;
+}
+.cheer::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--rust), var(--ochre), var(--sage)); }
+.cheer .cheer-emoji { font-size: 2.4rem; margin-bottom: 0.6rem; }
+.cheer h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 300; font-style: italic; line-height: 1.2; margin-bottom: 0.7rem; }
+.cheer h3 em { color: var(--ochre); }
+.cheer p { font-size: 0.9rem; color: var(--light-dust); line-height: 1.6; margin-bottom: 0.6rem; }
+.cheer p:last-child { margin-bottom: 0; }
+
+.contact-card {
+  background: rgba(184,76,30,0.1);
+  border: 1px solid rgba(184,76,30,0.35);
+  border-radius: 10px;
+  padding: 1.1rem 1.2rem;
+  margin: 1.2rem 0;
+}
+.contact-card .cc-label { font-family: 'DM Mono', monospace; font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem; }
+.contact-card .cc-line { font-size: 0.9rem; margin-bottom: 0.4rem; display: flex; align-items: flex-start; gap: 0.5rem; }
+.contact-card .cc-line:last-child { margin-bottom: 0; }
+.contact-card .cc-ico { flex-shrink: 0; }
+.contact-card strong { font-family: 'DM Mono', monospace; font-size: 0.85rem; }
+
+/* ══════════════════════════════════════════════
+   DISCLAIMER
+══════════════════════════════════════════════ */
+.disclaimer {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--dust);
+  line-height: 1.7;
+  border-top: 1px solid var(--light-dust);
+  padding: 1.2rem 0.2rem 0.5rem;
+  margin-top: 1.5rem;
+}
+.disclaimer strong { color: var(--slate); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.62rem; display: block; margin-bottom: 0.4rem; }
+
+/* ── TOAST ── */
+#toast {
+  position: fixed;
+  bottom: calc(var(--nav-h) + 1rem);
+  left: 1rem; right: 1rem;
+  text-align: center;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  padding: 0.85rem 1.2rem;
+  border-radius: 8px;
+  border-left: 3px solid var(--sage);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.25s, transform 0.25s;
+  pointer-events: none;
+  z-index: 9999;
+}
+#toast.visible { opacity: 1; transform: translateY(0); }
+
+/* ══════════════════════════════════════════════
+   DESKTOP
+══════════════════════════════════════════════ */
+@media (min-width: 720px) {
+  body { padding-bottom: 0; }
+  .header-inner { flex-direction: row; align-items: flex-end; gap: 1.5rem; max-width: 900px; margin: 0 auto; }
+  header { padding: 2.6rem 2rem 2.2rem; }
+  .header-title { font-size: clamp(2.2rem, 4vw, 3.2rem); }
+  .header-meta { text-align: right; flex-shrink: 0; }
+  .identity-bar { justify-content: center; padding: 0.7rem 2rem; }
+
+  #bottom-nav { display: none; }
+  .nav-tabs {
+    display: flex;
+    background: var(--ink);
+    padding: 0 2rem;
+    overflow-x: auto;
+    gap: 0;
+  }
+  .nav-tab {
+    background: none; border: none; color: var(--light-dust);
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.85rem 1.3rem; cursor: pointer;
+    border-bottom: 3px solid transparent; transition: all 0.2s;
+    white-space: nowrap; position: relative; bottom: -3px;
+  }
+  .nav-tab:hover { color: var(--paper); }
+  .nav-tab.active { color: var(--ochre); border-bottom-color: var(--ochre); background: rgba(201,146,26,0.08); }
+
+  main { max-width: 900px; margin: 0 auto; padding: 2rem; }
+  .cards-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  .btn { width: auto; }
+  .btn-stack { flex-direction: row; flex-wrap: wrap; }
+  .step-row { flex-direction: row; }
+  .step-pill { flex: 1; }
+}
+
+/* ══════════════════════════════════════════════
+   IMPRESSION / PDF
+══════════════════════════════════════════════ */
+@media print {
+  :root { --nav-h: 0px; }
+  body { padding-bottom: 0; background: #fff; }
+  body::before { display: none; }
+  .nav-tabs, #bottom-nav, #toast, .no-print, .flipcard, .step-pill, .intro-hero { display: none !important; }
+  header { background: #fff !important; color: #000 !important; border-bottom: 2px solid #000; }
+  .header-title, .header-title em { color: #000 !important; }
+  .header-sub, .header-meta { color: #444 !important; }
+  .identity-bar { background: #fff !important; color: #000 !important; border-bottom: 1px solid #000; }
+  .identity-bar input { color: #000 !important; border: none !important; border-bottom: 1px solid #000 !important; background: none !important; }
+  .identity-bar label { color: #000 !important; }
+  .tab-section { display: block !important; page-break-before: always; }
+  .tab-section:first-of-type { page-break-before: avoid; }
+  .day-body { display: block !important; }
+  .day-header, .todo-header { background: #f0f0f0 !important; color: #000 !important; }
+  .day-label, .todo-label, .day-title, .todo-title { color: #000 !important; }
+  .field input, .field textarea { border: 1px solid #999 !important; background: #fff !important; }
+  .cheer { background: #fff !important; color: #000 !important; border: 1px solid #000; }
+  .cheer h3, .cheer h3 em, .cheer p { color: #000 !important; }
+  .btn, .export-card, .rating { display: none !important; }
+  .contact-card { background: #fff !important; border: 1px solid #000; }
+  .alert-box, .info-box, .slate-box { background: #fff !important; border: 1px solid #999 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── TOAST ── -->
+<div id="toast">✓ Enregistré</div>
+
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="header-title">Mon carnet de <em>stage</em></div>
+      <div class="header-sub">Seconde · Lycée Édouard Herriot, Voiron · Juin 2026</div>
+    </div>
+    <div class="header-meta">
+      📅 Stage : semaines du 15 et 22 juin<br>
+      🗓️ 12 jours, ou 2 × 6 jours<br>
+      🎯 Découvrir le monde professionnel<br>
+      <span class="countdown" id="countdown"></span>
+    </div>
+  </div>
+</header>
+
+<!-- ── IDENTITÉ ── -->
+<div class="identity-bar">
+  <div class="id-field">
+    <label>Nom</label>
+    <input type="text" id="id-nom" placeholder="…" data-save="id-nom">
+  </div>
+  <div class="id-field">
+    <label>Classe</label>
+    <input type="text" id="id-classe" placeholder="2nde…" data-save="id-classe" style="min-width:70px">
+  </div>
+  <div class="id-field">
+    <label>Entreprise</label>
+    <input type="text" id="id-entreprise" placeholder="…" data-save="id-entreprise" style="min-width:120px">
+  </div>
+</div>
+
+<!-- ── NAV DESKTOP ── -->
+<nav class="nav-tabs">
+  <button class="nav-tab active" onclick="showTab('accueil', this)">🏠 Accueil</button>
+  <button class="nav-tab" onclick="showTab('avant', this)">🎒 Avant</button>
+  <button class="nav-tab" onclick="showTab('pendant', this)">🛠️ Pendant</button>
+  <button class="nav-tab" onclick="showTab('apres', this)">🌱 Après</button>
+  <button class="nav-tab" onclick="showTab('export', this)">💾 Sauvegarde</button>
+</nav>
+
+<!-- ── NAV MOBILE ── -->
+<nav id="bottom-nav">
+  <button class="bnav-btn active" onclick="showTab('accueil', this)" id="bnav-accueil">
+    <span class="bnav-icon">🏠</span><span class="bnav-label">Accueil</span>
+  </button>
+  <button class="bnav-btn" onclick="showTab('avant', this)" id="bnav-avant">
+    <span class="bnav-icon">🎒</span><span class="bnav-label">Avant</span>
+  </button>
+  <button class="bnav-btn" onclick="showTab('pendant', this)" id="bnav-pendant">
+    <span class="bnav-icon">🛠️</span><span class="bnav-label">Pendant</span>
+  </button>
+  <button class="bnav-btn" onclick="showTab('apres', this)" id="bnav-apres">
+    <span class="bnav-icon">🌱</span><span class="bnav-label">Après</span>
+  </button>
+  <button class="bnav-btn" onclick="showTab('export', this)" id="bnav-export">
+    <span class="bnav-icon">💾</span><span class="bnav-label">Sauver</span>
+  </button>
+</nav>
+
+<main>
+
+<!-- ════════════════════════════════════════════
+     TAB ACCUEIL
+═════════════════════════════════════════════ -->
+<section class="tab-section active" id="tab-accueil">
+  <div class="intro-hero">
+    <div class="intro-kicker">La démarche · à lire en premier</div>
+    <h2>Ce stage est <span style="font-style:normal">pour toi.</span></h2>
+    <p>Pendant ces journées, tu vas pousser la porte d'une entreprise, observer un ou plusieurs métiers, et te poser une question simple&nbsp;: <span class="highlight">«&nbsp;est-ce que ce monde-là me parle&nbsp;?&nbsp;»</span></p>
+    <p>Cette appli t'accompagne <strong>avant, pendant et après</strong> ton stage. Tu y notes ce que tu vis au fil de l'eau&nbsp;: une checklist pour ne rien oublier, des fiches conseils, et un journal de bord à remplir chaque jour.</p>
+    <p>Tes notes te serviront <strong>à la rentrée de Première</strong>, lors de l'entretien avec l'équipe pédagogique. Elles t'aideront à raconter ton expérience et à avancer sur ton orientation.</p>
+  </div>
+
+  <div class="info-box">
+    <strong>📝 Pas de note, pas de stress</strong>
+    Ces notes <strong>ne seront pas évaluées</strong>. Personne ne te mettra une note dessus. Le but, c'est que <em>toi</em> tu gardes une trace de ce que tu as vu et ressenti, pour en parler à la rentrée.
+  </div>
+
+  <div class="block-title"><span class="num">›</span> Comment ça marche</div>
+  <div class="step-row">
+    <div class="step-pill av">
+      <span class="step-emoji">🎒</span>
+      <span class="step-text"><strong>Avant</strong>Je prépare mon arrivée et je note mes attentes.</span>
+    </div>
+    <div class="step-pill pe">
+      <span class="step-emoji">🛠️</span>
+      <span class="step-text"><strong>Pendant</strong>Je remplis mon journal de bord chaque jour.</span>
+    </div>
+    <div class="step-pill ap">
+      <span class="step-emoji">🌱</span>
+      <span class="step-text"><strong>Après</strong>Je fais le bilan et je relie ça à mon avenir.</span>
+    </div>
+  </div>
+
+  <div class="slate-box">
+    <strong>📅 Deux formules possibles</strong>
+    Certains feront <strong>un stage de 12 jours</strong> (du 15 au 26 juin), d'autres <strong>deux stages d'une semaine</strong> (semaine du 15, puis semaine du 22). L'onglet «&nbsp;Pendant&nbsp;» s'adapte&nbsp;: remplis seulement les jours qui te concernent.
+  </div>
+
+  <p style="font-size:0.85rem; text-align:center; color:var(--dust); font-style:italic; margin-top:1.2rem;">Commence par l'onglet «&nbsp;Avant&nbsp;» 👇</p>
+
+  <!-- DISCLAIMER bas de première page -->
+  <div class="disclaimer">
+    <strong>À propos de cette application</strong>
+    Toutes tes réponses sont enregistrées <strong>uniquement sur ton téléphone ou ton ordinateur</strong>, dans la mémoire de ce navigateur. Rien n'est envoyé sur Internet, personne d'autre ne peut les lire. Pense à utiliser <strong>toujours le même appareil et le même navigateur</strong> pour les retrouver. Pour garder une copie sûre, va dans l'onglet «&nbsp;Sauvegarde&nbsp;» et exporte ton carnet en PDF. Document conçu par l'équipe pédagogique du Lycée Édouard Herriot (Voiron) — usage interne, à but pédagogique.
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     TAB AVANT
+═════════════════════════════════════════════ -->
+<section class="tab-section" id="tab-avant">
+  <div class="section-heading">Avant le stage</div>
+  <div class="section-sub">Je me prépare · semaine avant le 15 juin</div>
+
+  <!-- TO-DO -->
+  <div class="todo-card">
+    <div class="todo-header">
+      <div>
+        <div class="todo-label">Checklist</div>
+        <div class="todo-title">À régler avant le jour J</div>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Ma préparation</span><span class="ptext">0 / 0</span></div>
+      <div class="progress-bar"><div class="progress-fill"></div></div>
+    </div>
+    <div class="todo-body">
+      <ul class="task-list">
+        <li class="task-item priority-haute" onclick="toggleTask(this, event)"><input type="checkbox" data-save="t-av1"><span class="task-text">Je connais mes <strong>horaires</strong> et l'adresse exacte de l'entreprise</span></li>
+        <li class="task-item priority-haute" onclick="toggleTask(this, event)"><input type="checkbox" data-save="t-av2"><span class="task-text">J'ai repéré <strong>comment m'y rendre</strong> (transport, durée du trajet)</span></li>
+        <li class="task-item priority-moyenne" onclick="toggleTask(this, event)"><input type="checkbox" data-save="t-av3"><span class="task-text">J'ai prévu mes <strong>repas du midi</strong> (cantine, pique-nique, à proximité…)</span></li>
+        <li class="task-item priority-moyenne" onclick="toggleTask(this, event)"><input type="checkbox" data-save="t-av4"><span class="task-text">J'ai préparé une <strong>tenue adaptée</strong> (propre, correcte, selon le métier)</span></li>
+        <li class="task-item priority-moyenne" onclick="toggleTask(this, event)"><input type="checkbox" data-save="t-av5"><span class="task-text">J'ai noté le <strong>nom de mon tuteur</strong> / responsable de stage</span></li>
+        <li class="task-item priority-basse" onclick="toggleTask(this, event)"><input type="checkbox" data-save="t-av6"><span class="task-text">J'ai mon <strong>carnet/téléphone</strong> pour prendre des notes au fil de l'eau</span></li>
+        <li class="task-item priority-basse" onclick="toggleTask(this, event)"><input type="checkbox" data-save="t-av7"><span class="task-text">J'ai noté le <strong>numéro du lycée</strong> en cas de souci (voir onglet «&nbsp;Après&nbsp;»)</span></li>
+        <li class="task-item priority-basse" onclick="toggleTask(this, event)"><input type="checkbox" data-save="t-av8"><span class="task-text">Ma <strong>convention de stage</strong> est signée et je sais où elle est</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FICHES CONSEILS -->
+  <div class="block-title"><span class="num">i</span> Fiches conseils</div>
+  <p style="font-size:0.82rem; color:var(--dust); margin-bottom:0.3rem;">Touche une carte pour la retourner 👆</p>
+  <div class="cards-grid">
+    <div class="flipcard" onclick="flipCard(this)">
+      <div class="flipcard-inner">
+        <div class="flipcard-front">
+          <div class="card-theme">Premier jour</div>
+          <div class="card-question">Comment bien arriver le premier matin&nbsp;?</div>
+          <div class="card-hint">touche pour voir →</div>
+        </div>
+        <div class="flipcard-back">
+          <div class="card-theme">Premier jour</div>
+          <div class="card-answer"><ul>
+            <li>Arrive <strong>5 à 10 min en avance</strong>.</li>
+            <li>Dis bonjour, présente-toi, souris.</li>
+            <li>Demande à qui t'adresser en cas de question.</li>
+            <li>Repère les toilettes, la pause, les horaires.</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flipcard" onclick="flipCard(this)">
+      <div class="flipcard-inner">
+        <div class="flipcard-front">
+          <div class="card-theme">Attitude</div>
+          <div class="card-question">Quelle attitude adopter pendant le stage&nbsp;?</div>
+          <div class="card-hint">touche pour voir →</div>
+        </div>
+        <div class="flipcard-back">
+          <div class="card-theme">Attitude</div>
+          <div class="card-answer"><ul>
+            <li><strong>Ponctuel et présent</strong> tous les jours.</li>
+            <li>Poli, curieux, volontaire.</li>
+            <li>Range ton téléphone sauf si on t'autorise à t'en servir.</li>
+            <li>Si tu ne comprends pas&nbsp;: pose la question&nbsp;!</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flipcard" onclick="flipCard(this)">
+      <div class="flipcard-inner">
+        <div class="flipcard-front">
+          <div class="card-theme">Observer</div>
+          <div class="card-question">Que dois-je observer et noter&nbsp;?</div>
+          <div class="card-hint">touche pour voir →</div>
+        </div>
+        <div class="flipcard-back">
+          <div class="card-theme">Observer</div>
+          <div class="card-answer"><ul>
+            <li>Les <strong>tâches</strong> que tu fais ou que tu vois faire.</li>
+            <li>Les <strong>métiers</strong> et qui travaille avec qui.</li>
+            <li>Les <strong>outils / machines</strong> utilisés.</li>
+            <li>L'ambiance, les horaires, les conditions de travail.</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flipcard" onclick="flipCard(this)">
+      <div class="flipcard-inner">
+        <div class="flipcard-front">
+          <div class="card-theme">Journal de bord</div>
+          <div class="card-question">Quand remplir mon journal de bord&nbsp;?</div>
+          <div class="card-hint">touche pour voir →</div>
+        </div>
+        <div class="flipcard-back">
+          <div class="card-theme">Journal de bord</div>
+          <div class="card-answer"><ul>
+            <li><strong>Chaque jour</strong>, sur place ou le soir.</li>
+            <li>N'attends pas la fin de la semaine&nbsp;: tu oublierais&nbsp;!</li>
+            <li>Quelques mots suffisent, ce ne sont pas des phrases parfaites.</li>
+            <li>Tout est dans l'onglet «&nbsp;Pendant&nbsp;».</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- MES ATTENTES -->
+  <div class="block-title"><span class="num">?</span> Mes attentes</div>
+  <div class="info-box">
+    <strong>Avant de partir</strong>
+    Prends 5 minutes pour répondre. Tu reliras ça après le stage&nbsp;: c'est intéressant de voir ce qui a changé.
+  </div>
+
+  <div class="field">
+    <label>Pourquoi as-tu choisi cette entreprise / ce secteur&nbsp;?</label>
+    <textarea data-save="av-pourquoi" placeholder="Par curiosité, pour un métier qui m'attire, par proximité…"></textarea>
+  </div>
+  <div class="field">
+    <label>Qu'est-ce qui te plaît le plus dans l'idée de partir en stage&nbsp;?</label>
+    <textarea data-save="av-plaisir" placeholder="Découvrir le monde du travail, un métier précis…"></textarea>
+  </div>
+  <div class="field">
+    <label>Qu'est-ce qui t'inquiète ou te semble compliqué&nbsp;?</label>
+    <textarea data-save="av-inquietude" placeholder="Parler à des adultes, ne pas savoir faire… ou rien du tout !"></textarea>
+  </div>
+  <div class="field">
+    <label>Quels métiers aimerais-tu découvrir sur place&nbsp;?</label>
+    <textarea data-save="av-metiers" placeholder="…"></textarea>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     TAB PENDANT
+═════════════════════════════════════════════ -->
+<section class="tab-section" id="tab-pendant">
+  <div class="section-heading">Pendant le stage</div>
+  <div class="section-sub">Je note au fil de l'eau · chaque jour</div>
+
+  <div class="alert-box">
+    <strong>⚡ Le bon réflexe</strong>
+    Remplis ton journal <strong>chaque soir</strong>, pendant que tu te souviens de tout. Même rapidement&nbsp;! Récupère aussi des documents (photos, plaquettes, brochures) si c'est autorisé.
+  </div>
+
+  <!-- FICHE IDENTITÉ ENTREPRISE -->
+  <div class="block-title"><span class="num">①</span> Fiche d'identité de l'entreprise</div>
+  <div class="identity-card">
+    <div class="field"><label>Nom de l'entreprise / organisme</label><input type="text" data-save="ent-nom" placeholder="…"></div>
+    <div class="field"><label>Ville</label><input type="text" data-save="ent-ville" placeholder="…"></div>
+    <div class="field"><label>Que fait cette entreprise&nbsp;? (son activité, avec tes mots)</label><textarea data-save="ent-activite" placeholder="Comme si tu l'expliquais à quelqu'un qui ne la connaît pas."></textarea></div>
+    <div class="field-row">
+      <div class="field"><label>Secteur</label>
+        <select data-save="ent-secteur">
+          <option value="">— choisir —</option>
+          <option>Primaire (agriculture, pêche…)</option>
+          <option>Secondaire (industrie, artisanat…)</option>
+          <option>Tertiaire (services, commerce…)</option>
+        </select>
+      </div>
+      <div class="field"><label>Combien de personnes&nbsp;?</label><input type="text" data-save="ent-taille" placeholder="env. …"></div>
+    </div>
+    <div class="field"><label>Nom de mon tuteur / responsable de stage</label><input type="text" data-save="ent-tuteur" placeholder="…"></div>
+    <div class="field"><label>Les principaux métiers que j'y observe</label><textarea data-save="ent-metiers" placeholder="…"></textarea></div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- JOURNAL DE BORD -->
+  <div class="block-title"><span class="num">②</span> Journal de bord</div>
+  <div class="slate-box">
+    <strong>💡 Deux formules</strong>
+    <strong>Stage de 12 jours&nbsp;:</strong> remplis les 12 jours. <strong>Deux stages d'une semaine&nbsp;:</strong> les jours 1 à 6 = première entreprise, les jours 7 à 12 = seconde entreprise. Remplis seulement ce qui te concerne.
+  </div>
+
+  <div id="journal-container"></div>
+
+</section>
+
+<!-- ════════════════════════════════════════════
+     TAB APRÈS
+═════════════════════════════════════════════ -->
+<section class="tab-section" id="tab-apres">
+  <div class="section-heading">Après le stage</div>
+  <div class="section-sub">Je fais le bilan · pour la rentrée de Première</div>
+
+  <div class="info-box">
+    <strong>🎯 À quoi ça sert</strong>
+    Ce bilan est <strong>la partie la plus utile</strong> pour ton entretien de rentrée. Prends ton temps, sois honnête&nbsp;: il n'y a pas de bonne ou de mauvaise réponse.
+  </div>
+
+  <!-- INTERVIEW PRO -->
+  <div class="block-title"><span class="num">①</span> J'interviewe un professionnel</div>
+  <p style="font-size:0.82rem; color:var(--dust); margin-bottom:0.8rem;">Choisis quelqu'un dont le métier t'intéresse et pose-lui ces questions.</p>
+  <div class="field"><label>Quel métier exerce cette personne&nbsp;?</label><input type="text" data-save="int-metier" placeholder="…"></div>
+  <div class="field"><label>En quoi consiste son travail au quotidien&nbsp;?</label><textarea data-save="int-quotidien" placeholder="…"></textarea></div>
+  <div class="field"><label>Quelles études / formations faut-il faire&nbsp;?</label><textarea data-save="int-formation" placeholder="…"></textarea></div>
+  <div class="field"><label>Quelles qualités sont nécessaires pour ce métier&nbsp;?</label><textarea data-save="int-qualites" placeholder="…"></textarea></div>
+  <div class="field"><label>Pourquoi a-t-elle choisi ce métier&nbsp;? Qu'est-ce qui lui plaît&nbsp;?</label><textarea data-save="int-choix" placeholder="…"></textarea></div>
+
+  <hr class="section-divider">
+
+  <!-- BILAN PERSO -->
+  <div class="block-title"><span class="num">②</span> Mon ressenti</div>
+  <div class="field"><label>Ce que j'ai découvert lors de ce stage</label><textarea data-save="bil-decouvert" placeholder="Sur le monde du travail, sur le métier, sur moi-même…"></textarea></div>
+  <div class="field"><label>Ce que j'ai le plus apprécié</label><textarea data-save="bil-apprecie" placeholder="…"></textarea></div>
+  <div class="field"><label>Ce qui m'a déçu ou semblé difficile</label><textarea data-save="bil-decu" placeholder="…"></textarea></div>
+  <div class="field"><label>Une difficulté rencontrée… et comment je l'ai surmontée</label><textarea data-save="bil-difficulte" placeholder="…"></textarea></div>
+
+  <hr class="section-divider">
+
+  <!-- COMPÉTENCES -->
+  <div class="block-title"><span class="num">③</span> Ce que j'ai développé</div>
+  <p style="font-size:0.82rem; color:var(--dust); margin-bottom:0.5rem;">Coche ce qui te correspond.</p>
+  <ul class="skill-check">
+    <li onclick="toggleSkill(this, event)"><input type="checkbox" data-save="sk-auto"><span class="sk-text">Mon <strong>autonomie</strong></span></li>
+    <li onclick="toggleSkill(this, event)"><input type="checkbox" data-save="sk-resp"><span class="sk-text">Mon <strong>sens des responsabilités</strong></span></li>
+    <li onclick="toggleSkill(this, event)"><input type="checkbox" data-save="sk-com"><span class="sk-text">Ma <strong>communication</strong> avec les adultes</span></li>
+    <li onclick="toggleSkill(this, event)"><input type="checkbox" data-save="sk-org"><span class="sk-text">Mon <strong>organisation</strong></span></li>
+    <li onclick="toggleSkill(this, event)"><input type="checkbox" data-save="sk-equipe"><span class="sk-text">Ma capacité à <strong>travailler en équipe</strong></span></li>
+  </ul>
+  <div class="field" style="margin-top:0.8rem;"><label>Un exemple concret d'une compétence que j'ai développée</label><textarea data-save="bil-exemple" placeholder="Raconte une situation précise."></textarea></div>
+
+  <hr class="section-divider">
+
+  <!-- ORIENTATION -->
+  <div class="block-title"><span class="num">④</span> Lien avec mon avenir</div>
+  <div class="info-box">
+    <strong>🧭 Le cœur de l'entretien de Première</strong>
+    Ces questions font le lien entre ton stage et tes choix à venir (spécialités, projets, métiers).
+  </div>
+  <div class="field"><label>Ce stage m'a donné envie de…</label><textarea data-save="or-envie" placeholder="…"></textarea></div>
+  <div class="field"><label>Ce stage m'a fait changer d'avis sur…</label><textarea data-save="or-avis" placeholder="…"></textarea></div>
+  <div class="field"><label>Est-ce que j'aimerais travailler dans ce type d'entreprise / ce secteur&nbsp;? Pourquoi&nbsp;?</label><textarea data-save="or-secteur" placeholder="…"></textarea></div>
+  <div class="field"><label>Comment ce stage fait évoluer mon projet&nbsp;?</label><textarea data-save="or-projet" placeholder="…"></textarea></div>
+
+  <hr class="section-divider">
+
+  <!-- AUTO-ÉVAL -->
+  <div class="block-title"><span class="num">⑤</span> Je m'auto-évalue</div>
+  <p style="font-size:0.82rem; color:var(--dust); margin-bottom:0.5rem;">Touche les étoiles (juste pour toi, pas de note&nbsp;!).</p>
+  <div class="field">
+    <label>Mon implication pendant le stage</label>
+    <div class="rating" data-rating="r-implication"></div>
+  </div>
+  <div class="field">
+    <label>Ma curiosité</label>
+    <div class="rating" data-rating="r-curiosite"></div>
+  </div>
+  <div class="field">
+    <label>Le respect des consignes et des horaires</label>
+    <div class="rating" data-rating="r-consignes"></div>
+  </div>
+  <div class="field"><label>Ce dont je suis le/la plus fier·e</label><textarea data-save="bil-fier" placeholder="…"></textarea></div>
+
+  <hr class="section-divider">
+
+  <!-- CONTACT / DIFFICULTÉS -->
+  <div class="contact-card">
+    <div class="cc-label"><span>📞</span> Un souci pendant le stage&nbsp;?</div>
+    <div class="cc-line"><span class="cc-ico">🏫</span><span>Appelle le <strong>Lycée Édouard Herriot de Voiron</strong> — l'établissement te répondra et préviendra qui de droit.</span></div>
+    <div class="cc-line"><span class="cc-ico">💬</span><span>Ou envoie un <strong>message Pronote à ton professeur principal</strong>.</span></div>
+    <div class="cc-line"><span class="cc-ico">🤝</span><span>Absence, malaise, problème dans l'entreprise&nbsp;: ne reste jamais seul·e avec le souci. On est là.</span></div>
+  </div>
+
+  <!-- ENCOURAGEMENT FINAL -->
+  <div class="cheer">
+    <div class="cheer-emoji">🌟</div>
+    <h3>Bravo, tu y es&nbsp;<em>arrivé·e</em>&nbsp;!</h3>
+    <p>Un stage, c'est une vraie première expérience du monde du travail. Que tu aies adoré ou que tu aies découvert ce qui ne te correspond <em>pas</em>, c'est une réussite&nbsp;: tu en sais plus sur toi.</p>
+    <p>Garde précieusement ce carnet. Il t'attendra à la rentrée de Première pour ton entretien — et tu auras des choses passionnantes à raconter.</p>
+    <p style="margin-top:0.8rem; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.1rem; color:var(--ochre);">Profite bien. Ce stage est pour toi.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     TAB EXPORT / SAUVEGARDE
+═════════════════════════════════════════════ -->
+<section class="tab-section" id="tab-export">
+  <div class="section-heading">Sauvegarde &amp; export</div>
+  <div class="section-sub">Garder une trace de mon carnet</div>
+
+  <div class="info-box">
+    <strong>✓ Tout est déjà enregistré</strong>
+    Dès que tu écris quelque chose, c'est <strong>automatiquement sauvegardé</strong> sur cet appareil. Tu peux fermer l'appli et revenir plus tard&nbsp;: tout sera là (si tu utilises le même navigateur).
+  </div>
+
+  <div class="export-card">
+    <div class="export-icon">📄</div>
+    <h3>Exporter en PDF</h3>
+    <p>Crée un PDF propre de tout ton carnet, à imprimer ou à montrer à la rentrée. Sur le menu d'impression, choisis «&nbsp;Enregistrer au format PDF&nbsp;».</p>
+    <button class="btn ochre" onclick="exportPDF()">📄 Créer mon PDF</button>
+  </div>
+
+  <div class="export-card">
+    <div class="export-icon">💾</div>
+    <h3>Fichier de sauvegarde (.json)</h3>
+    <p>Télécharge un petit fichier de secours avec toutes tes réponses. Utile pour changer d'appareil&nbsp;: tu pourras le réimporter ici.</p>
+    <div class="btn-stack">
+      <button class="btn" onclick="exportJSON()">⬇️ Télécharger ma sauvegarde</button>
+      <button class="btn outline" onclick="document.getElementById('import-file').click()">⬆️ Réimporter une sauvegarde</button>
+    </div>
+    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJSON(event)">
+  </div>
+
+  <div class="alert-box">
+    <strong>⚠️ Bon à savoir</strong>
+    Si tu vides l'historique de ton navigateur, ou si tu changes de téléphone, tes réponses <strong>peuvent disparaître</strong>. Le PDF et le fichier de sauvegarde sont là pour ça&nbsp;: fais-en un dès que ton carnet est bien rempli&nbsp;!
+  </div>
+
+  <div class="export-card" style="border-color: rgba(184,76,30,0.3);">
+    <div class="export-icon">🗑️</div>
+    <h3>Tout effacer</h3>
+    <p>Repartir de zéro. Attention&nbsp;: cette action est définitive.</p>
+    <button class="btn outline" onclick="resetAll()" style="border-color:var(--rust); color:var(--rust);">🗑️ Effacer tout mon carnet</button>
+  </div>
+</section>
+
+</main>
+
+<script>
+/* ══════════════════════════════════════════════
+   CONFIG
+══════════════════════════════════════════════ */
+const STORAGE_KEY = 'carnet_stage_2nde_herriot';
+const NB_JOURS = 12;
+
+/* ══════════════════════════════════════════════
+   GÉNÉRATION DU JOURNAL DE BORD (12 jours)
+══════════════════════════════════════════════ */
+function buildJournal() {
+  const container = document.getElementById('journal-container');
+  let html = '';
+  for (let j = 1; j <= NB_JOURS; j++) {
+    const semaine = j <= 6 ? 'Semaine 1' : 'Semaine 2';
+    html += `
+    <div class="day-block" id="day-${j}">
+      <div class="day-header" onclick="toggleDay('day-${j}')">
+        <div>
+          <div class="day-label">${semaine} · Jour ${j}</div>
+          <div class="day-title">Journée n°${j}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.6rem;">
+          <span class="day-filled-check">✓</span>
+          <span class="day-toggle">⌄</span>
+        </div>
+      </div>
+      <div class="day-body">
+        <div class="field-row">
+          <div class="field"><label>Date</label><input type="date" data-save="j${j}-date" oninput="checkDayFilled('day-${j}')"></div>
+          <div class="field"><label>Horaires</label><input type="text" data-save="j${j}-horaires" placeholder="9h–17h" oninput="checkDayFilled('day-${j}')"></div>
+        </div>
+
+        <div class="half-day">
+          <div class="half-day-title">☀️ Matin</div>
+          <div class="field"><label>Tâches faites ou observées</label><textarea data-save="j${j}-matin-taches" placeholder="…" oninput="checkDayFilled('day-${j}')"></textarea></div>
+          <div class="field"><label>Personnes rencontrées · outils utilisés</label><textarea data-save="j${j}-matin-pers" placeholder="…" oninput="checkDayFilled('day-${j}')"></textarea></div>
+        </div>
+
+        <div class="half-day">
+          <div class="half-day-title">🌙 Après-midi</div>
+          <div class="field"><label>Tâches faites ou observées</label><textarea data-save="j${j}-aprem-taches" placeholder="…" oninput="checkDayFilled('day-${j}')"></textarea></div>
+          <div class="field"><label>Personnes rencontrées · outils utilisés</label><textarea data-save="j${j}-aprem-pers" placeholder="…" oninput="checkDayFilled('day-${j}')"></textarea></div>
+        </div>
+
+        <div class="field"><label>⭐ Ce que j'ai appris d'important aujourd'hui</label><textarea data-save="j${j}-appris" placeholder="Même une petite chose !" oninput="checkDayFilled('day-${j}')"></textarea></div>
+        <div class="field"><label>😊 Mon ressenti sur la journée</label><textarea data-save="j${j}-ressenti" placeholder="…" oninput="checkDayFilled('day-${j}')"></textarea></div>
+      </div>
+    </div>`;
+  }
+  container.innerHTML = html;
+}
+
+/* ══════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════ */
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.bnav-btn').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t => {
+    const oc = t.getAttribute('onclick');
+    if (oc && oc.includes("'" + id + "'")) t.classList.add('active');
+  });
+  const bnav = document.getElementById('bnav-' + id);
+  if (bnav) bnav.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ══════════════════════════════════════════════
+   JOURNAL — toggle & complétion
+══════════════════════════════════════════════ */
+function toggleDay(id) { document.getElementById(id).classList.toggle('open'); }
+
+function checkDayFilled(id) {
+  const block = document.getElementById(id);
+  if (!block) return;
+  const filled = [...block.querySelectorAll('textarea, input')].some(el => el.value && el.value.trim() !== '');
+  block.classList.toggle('filled', filled);
+  saveState();
+}
+
+/* ══════════════════════════════════════════════
+   TASKS / SKILLS
+══════════════════════════════════════════════ */
+function toggleTask(item, event) {
+  const cb = item.querySelector('input[type="checkbox"]');
+  if (event && event.target === cb) {
+    item.classList.toggle('done', cb.checked);
+  } else {
+    cb.checked = !cb.checked;
+    item.classList.toggle('done', cb.checked);
+  }
+  updateProgress(item.closest('.todo-card'));
+  saveState();
+}
+
+function toggleSkill(item, event) {
+  const cb = item.querySelector('input[type="checkbox"]');
+  if (!(event && event.target === cb)) cb.checked = !cb.checked;
+  saveState();
+}
+
+function updateProgress(card) {
+  if (!card) return;
+  const tasks = card.querySelectorAll('.task-item');
+  const done = card.querySelectorAll('.task-item.done').length;
+  const total = tasks.length;
+  const pct = total ? (done / total * 100) : 0;
+  const fill = card.querySelector('.progress-fill');
+  const text = card.querySelector('.ptext');
+  if (fill) fill.style.width = pct + '%';
+  if (text) text.textContent = done + ' / ' + total;
+}
+
+/* ══════════════════════════════════════════════
+   FLIPCARDS
+══════════════════════════════════════════════ */
+function flipCard(card) { card.classList.toggle('flipped'); }
+
+/* ══════════════════════════════════════════════
+   RATING (étoiles)
+══════════════════════════════════════════════ */
+function buildRatings() {
+  document.querySelectorAll('.rating').forEach(r => {
+    const key = r.dataset.rating;
+    r.innerHTML = '';
+    for (let i = 1; i <= 5; i++) {
+      const s = document.createElement('span');
+      s.className = 'star';
+      s.textContent = '★';
+      s.dataset.val = i;
+      s.onclick = () => setRating(key, i);
+      r.appendChild(s);
+    }
+  });
+}
+function setRating(key, val) {
+  const r = document.querySelector(`.rating[data-rating="${key}"]`);
+  const current = parseInt(r.dataset.value || '0');
+  // toucher la même étoile -> on décrémente (permet de remettre à 0)
+  const newVal = (current === val) ? val - 1 : val;
+  r.dataset.value = newVal;
+  r.querySelectorAll('.star').forEach((s, i) => s.classList.toggle('on', i < newVal));
+  saveState();
+}
+
+/* ══════════════════════════════════════════════
+   SAUVEGARDE / CHARGEMENT
+══════════════════════════════════════════════ */
+function collectState() {
+  const state = { fields: {}, checks: {}, ratings: {} };
+  document.querySelectorAll('[data-save]').forEach(el => {
+    const k = el.dataset.save;
+    if (el.type === 'checkbox') state.checks[k] = el.checked;
+    else state.fields[k] = el.value;
+  });
+  document.querySelectorAll('.rating').forEach(r => {
+    state.ratings[r.dataset.rating] = r.dataset.value || '0';
+  });
+  return state;
+}
+
+function applyState(state) {
+  if (!state) return;
+  if (state.fields) {
+    for (const k in state.fields) {
+      const el = document.querySelector(`[data-save="${k}"]`);
+      if (el && el.type !== 'checkbox') el.value = state.fields[k];
+    }
+  }
+  if (state.checks) {
+    for (const k in state.checks) {
+      const el = document.querySelector(`[data-save="${k}"]`);
+      if (el && el.type === 'checkbox') {
+        el.checked = state.checks[k];
+        const li = el.closest('.task-item');
+        if (li) li.classList.toggle('done', el.checked);
+      }
+    }
+  }
+  if (state.ratings) {
+    for (const k in state.ratings) {
+      const r = document.querySelector(`.rating[data-rating="${k}"]`);
+      if (r) {
+        const v = parseInt(state.ratings[k] || '0');
+        r.dataset.value = v;
+        r.querySelectorAll('.star').forEach((s, i) => s.classList.toggle('on', i < v));
+      }
+    }
+  }
+  // recalcul des indicateurs
+  document.querySelectorAll('.todo-card').forEach(c => updateProgress(c));
+  document.querySelectorAll('.day-block').forEach(b => {
+    const filled = [...b.querySelectorAll('textarea, input')].some(el => el.value && el.value.trim() !== '');
+    b.classList.toggle('filled', filled);
+  });
+}
+
+let saveTimer = null;
+function saveState() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(collectState()));
+      flashToast('✓ Enregistré');
+    } catch (e) {
+      flashToast('⚠️ Sauvegarde impossible');
+    }
+  }, 400);
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) applyState(JSON.parse(raw));
+  } catch (e) { console.warn('loadState', e); }
+}
+
+/* attache la sauvegarde auto sur les champs texte */
+function attachAutosave() {
+  document.querySelectorAll('input[type="text"], input[type="date"], textarea, select').forEach(el => {
+    if (el.id === 'import-file') return;
+    el.addEventListener('input', saveState);
+    el.addEventListener('change', saveState);
+  });
+}
+
+/* ══════════════════════════════════════════════
+   EXPORT PDF
+══════════════════════════════════════════════ */
+function exportPDF() {
+  flashToast('📄 Ouverture de l\'impression…');
+  setTimeout(() => window.print(), 350);
+}
+
+/* ══════════════════════════════════════════════
+   EXPORT / IMPORT JSON
+══════════════════════════════════════════════ */
+function exportJSON() {
+  const data = collectState();
+  const nom = (document.getElementById('id-nom').value || 'eleve').replace(/[^a-zA-Z0-9]/g, '_');
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `carnet_stage_${nom}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  flashToast('💾 Sauvegarde téléchargée');
+}
+
+function importJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      applyState(data);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      flashToast('✓ Sauvegarde réimportée');
+    } catch (err) {
+      flashToast('⚠️ Fichier illisible');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+function resetAll() {
+  if (!confirm('Effacer TOUT ton carnet ? Cette action est définitive.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  document.querySelectorAll('[data-save]').forEach(el => {
+    if (el.type === 'checkbox') { el.checked = false; const li = el.closest('.task-item'); if (li) li.classList.remove('done'); }
+    else el.value = '';
+  });
+  document.querySelectorAll('.rating').forEach(r => { r.dataset.value = 0; r.querySelectorAll('.star').forEach(s => s.classList.remove('on')); });
+  document.querySelectorAll('.todo-card').forEach(c => updateProgress(c));
+  document.querySelectorAll('.day-block').forEach(b => b.classList.remove('filled'));
+  flashToast('🗑️ Carnet effacé');
+}
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+let toastTimer = null;
+function flashToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('visible');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('visible'), 1800);
+}
+
+/* ══════════════════════════════════════════════
+   COMPTE À REBOURS
+══════════════════════════════════════════════ */
+function updateCountdown() {
+  const el = document.getElementById('countdown');
+  if (!el) return;
+  const target = new Date('2026-06-15T08:00:00');
+  const now = new Date();
+  const diff = target - now;
+  const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+  if (days > 1) el.textContent = `⏳ J-${days} avant le départ`;
+  else if (days === 1) el.textContent = `⏳ C'est demain !`;
+  else if (days === 0) el.textContent = `🚀 C'est aujourd'hui — bon stage !`;
+  else if (days >= -11) el.textContent = `🛠️ Stage en cours — pense à ton journal !`;
+  else el.textContent = `🌱 Stage terminé — remplis ton bilan !`;
+}
+
+/* ══════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  buildJournal();
+  buildRatings();
+  attachAutosave();
+  loadState();
+  updateCountdown();
+  setInterval(updateCountdown, 3600000);
+});
+</script>
+</body>
+</html>
